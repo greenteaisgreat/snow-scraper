@@ -1,6 +1,7 @@
+const fs = require('fs');
 const puppeteer = require('puppeteer');
 
-const url = 'https://www.joshwcomeau.com/';
+const url = 'http://www.traversymedia.com/';
 
 const main = async ()  => {
     //create a virtual browser
@@ -24,13 +25,44 @@ const main = async ()  => {
     // const title = await page.evaluate(() => document.title);
     // console.log(title);
 
-    //retrieve the entirety of the text content on the page
+    // retrieve the entirety of the text content on the page
     // const text = await page.evaluate(() => document.body.innerText);
     // console.log(text);
     
+    //retrieves all links from a page; Array.from is used to convert
+    //the original Node list into an array
+    // const links = await page.evaluate(() => 
+    //     Array.from(document.querySelectorAll('a'), e => e.href));
+    // console.log(links);
 
+    //retrieves the name of all the courses and places each one
+    //in an object that populates an array; querySelectorAll is making
+    //use of the descendant combinator in CSS to target the id/class/element
+    // const courseInfo = await page.evaluate(() => 
+    //     Array.from(document.querySelectorAll('#cscourses .card'), (e) => ({
+    //         title: e.querySelector('.card-body h3').innerText,
+    //         level: e.querySelector('.card-body .level').innerText,
+    //         url: e.querySelector('.card-footer a').href
+    //     })));
+    // console.log(courseInfo);
 
-    //close the browser after successful parsing
+    //does the exact same thing as 'courseInfo', but with puppeteer syntactic sugar
+    const shortCourseInfo = await page.$$eval('#cscourses .card', 
+        (elements) => elements.map(e => ({
+        title: e.querySelector('.card-body h3').innerText,
+        level: e.querySelector('.card-body .level').innerText,
+        url: e.querySelector('.card-footer a').href
+    })));
+    console.log(shortCourseInfo);
+
+    //saves the scraped data into a .json file; 3rd param for 
+    //json.stringify nicely formats the output, based on length
+    fs.writeFile('scrapeTest.json', JSON.stringify(shortCourseInfo, null, shortCourseInfo.length), (err) => {
+        if (err) throw new Error('There was an error in saving the file');
+        console.log('File successfully saved!');
+    });
+
+    //close the browser after parsing attempt
     await browser.close(); 
 }
 
