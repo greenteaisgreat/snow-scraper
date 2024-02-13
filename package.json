@@ -2,10 +2,14 @@
   "name": "snow-scraper",
   "version": "1.0.0",
   "description": "A basic web scraper with a clever(?) name",
-  "type": "module",
+  "type": "commonjs",
   "main": "index.js",
   "scripts": {
-    "start": "node index"
+    "start": "node index",
+    "test": "jest --coverage"
+  },
+  "jest": {
+    "verbose": true
   },
   "keywords": [],
   "author": "",
@@ -14,6 +18,7 @@
     "puppeteer": "^22.0.0"
   },
   "devDependencies": {
+    "jest": "^29.7.0",
     "jest-puppeteer": "^10.0.0"
   }
 }
