@@ -1,4 +1,4 @@
-import puppeteer from "puppeteer";
+const puppeteer = require('puppeteer');
 
 const url = 'https://www.joshwcomeau.com/';
 
@@ -18,9 +18,18 @@ const main = async ()  => {
 
     //the entire page's HTML content gets retrieved
     // const html = await page.content();
+    // console.log(html);
     
+    //retrieves the page's title
+    // const title = await page.evaluate(() => document.title);
+    // console.log(title);
+
+    //retrieve the entirety of the text content on the page
+    // const text = await page.evaluate(() => document.body.innerText);
+    // console.log(text);
     
-    
+
+
     //close the browser after successful parsing
     await browser.close(); 
 }
